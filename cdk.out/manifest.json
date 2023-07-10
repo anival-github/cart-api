@@ -1,0 +1,148 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "CartApiStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CartApiStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CartApiStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "CartApiStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/135f4836f1ce8ba31cb63535ca9f13b88d47d5985042b297f831dac18bc30cd5.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CartApiStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CartApiStack.assets"
+      ],
+      "metadata": {
+        "/CartApiStack/CartApiConstruct/CartApiHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructCartApiHandlerServiceRole50503968"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/CartApiHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructCartApiHandler43218FAA"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiAA6B7217"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiCloudWatchRole2185F96A"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiAccount800193FA"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiDeploymentAE828B5F35c7509a4eaad680211a524fc5887e52"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiDeploymentStageprodE595EC7F"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiEndpoint1E11179E"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiproxy9A78E4F4"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/ApiPermission.CartApiStackCartApiConstructproductsapiE408F6B8.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiproxyANYApiPermissionCartApiStackCartApiConstructproductsapiE408F6B8ANYproxyB171FDDC"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/ApiPermission.Test.CartApiStackCartApiConstructproductsapiE408F6B8.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiproxyANYApiPermissionTestCartApiStackCartApiConstructproductsapiE408F6B8ANYproxy365A8451"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiproxyANYA8624641"
+          }
+        ],
+        "/CartApiStack/CartApiConstruct/products-api/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CartApiConstructproductsapiANYD3A244C1"
+          }
+        ],
+        "/CartApiStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CartApiStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/CartApiStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CartApiStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CartApiStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

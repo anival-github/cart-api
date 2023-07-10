@@ -1,0 +1,605 @@
+{
+ "Resources": {
+  "CartApiConstructCartApiHandlerServiceRole50503968": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/CartApiHandler/ServiceRole/Resource"
+   }
+  },
+  "CartApiConstructCartApiHandler43218FAA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7e06c58df535e82c9c27eefb0ed307cc827f9086f26d0b1c360d83a3551d892c.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CartApiConstructCartApiHandlerServiceRole50503968",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "Handler": "index.handler",
+    "Runtime": "nodejs18.x",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "CartApiConstructCartApiHandlerServiceRole50503968"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/CartApiHandler/Resource",
+    "aws:asset:path": "asset.7e06c58df535e82c9c27eefb0ed307cc827f9086f26d0b1c360d83a3551d892c",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CartApiConstructproductsapiAA6B7217": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "This service provides cart db access.",
+    "Name": "Cart Api"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Resource"
+   }
+  },
+  "CartApiConstructproductsapiCloudWatchRole2185F96A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/CloudWatchRole/Resource"
+   }
+  },
+  "CartApiConstructproductsapiAccount800193FA": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "CartApiConstructproductsapiCloudWatchRole2185F96A",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "CartApiConstructproductsapiAA6B7217"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Account"
+   }
+  },
+  "CartApiConstructproductsapiDeploymentAE828B5F35c7509a4eaad680211a524fc5887e52": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "CartApiConstructproductsapiAA6B7217"
+    },
+    "Description": "This service provides cart db access."
+   },
+   "DependsOn": [
+    "CartApiConstructproductsapiproxyANYA8624641",
+    "CartApiConstructproductsapiproxy9A78E4F4",
+    "CartApiConstructproductsapiANYD3A244C1"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Deployment/Resource"
+   }
+  },
+  "CartApiConstructproductsapiDeploymentStageprodE595EC7F": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "CartApiConstructproductsapiAA6B7217"
+    },
+    "DeploymentId": {
+     "Ref": "CartApiConstructproductsapiDeploymentAE828B5F35c7509a4eaad680211a524fc5887e52"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "CartApiConstructproductsapiAccount800193FA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/DeploymentStage.prod/Resource"
+   }
+  },
+  "CartApiConstructproductsapiproxy9A78E4F4": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "CartApiConstructproductsapiAA6B7217",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "CartApiConstructproductsapiAA6B7217"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/Resource"
+   }
+  },
+  "CartApiConstructproductsapiproxyANYApiPermissionCartApiStackCartApiConstructproductsapiE408F6B8ANYproxyB171FDDC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CartApiConstructCartApiHandler43218FAA",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "CartApiConstructproductsapiAA6B7217"
+       },
+       "/",
+       {
+        "Ref": "CartApiConstructproductsapiDeploymentStageprodE595EC7F"
+       },
+       "/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/ApiPermission.CartApiStackCartApiConstructproductsapiE408F6B8.ANY..{proxy+}"
+   }
+  },
+  "CartApiConstructproductsapiproxyANYApiPermissionTestCartApiStackCartApiConstructproductsapiE408F6B8ANYproxy365A8451": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CartApiConstructCartApiHandler43218FAA",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "CartApiConstructproductsapiAA6B7217"
+       },
+       "/test-invoke-stage/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/ApiPermission.Test.CartApiStackCartApiConstructproductsapiE408F6B8.ANY..{proxy+}"
+   }
+  },
+  "CartApiConstructproductsapiproxyANYA8624641": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "ANY",
+    "ResourceId": {
+     "Ref": "CartApiConstructproductsapiproxy9A78E4F4"
+    },
+    "RestApiId": {
+     "Ref": "CartApiConstructproductsapiAA6B7217"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "CartApiConstructCartApiHandler43218FAA",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Default/{proxy+}/ANY/Resource"
+   }
+  },
+  "CartApiConstructproductsapiANYD3A244C1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "ANY",
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "CartApiConstructproductsapiAA6B7217",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "CartApiConstructproductsapiAA6B7217"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "Type": "MOCK"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CartApiConstruct/products-api/Default/ANY/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WQzU7DMBCEn6V3ZyHlQK9pETegKg8Quc4SNj92lLUpUZR3Z+1AgdN8O/KOZr2F3T3cbvSFM1O1WUdnmF+9Nq0Sq5w73Z8rXVpXYcPwnOQxWOPJWUW6h/nkOlSHNxt1UXxXamb0DEUUmWEfTIt+rxnVmgazPL+GCB9x7IlZpkXpgWrt8aIniUb2xUAp/RcLY1ywXj3g0LmpR0Fx/0xSv06VVpBVF0aDqcFxdJ/Tj/MdvPIT+ndXRWulZbluqnRLTCNbxxcvwQ/B/1sXPjhbkU9XxP+Chm8+8h3kW8g3DRNlo9SmHuG06hcp6MvEewEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "CartApiStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "CartApiConstructproductsapiEndpoint1E11179E": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "CartApiConstructproductsapiAA6B7217"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "CartApiConstructproductsapiDeploymentStageprodE595EC7F"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

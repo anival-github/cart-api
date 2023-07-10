@@ -5,4 +5,5 @@ import { OrderService } from './services';
   providers: [ OrderService ],
   exports: [ OrderService ]
 })
+
 export class OrderModule {}
