@@ -21,7 +21,7 @@ class DatabaseConfigModule {}
         ...getDataSourceOptions(dbConfigProvider),
         autoLoadEntities: true,
         logging: 'all',
-        synchronize: false,
+        synchronize: true,
         logger: new DatabaseLogger(),
       }),
     }),

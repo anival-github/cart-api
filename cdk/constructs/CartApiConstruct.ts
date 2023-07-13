@@ -52,7 +52,7 @@ export class CartApiConstruct extends Construct {
       databaseName,
       securityGroups: [dbSecurityGroup],
       credentials: rds.Credentials.fromGeneratedSecret('postgres'),
-      maxAllocatedStorage: 10,
+      maxAllocatedStorage: 200,
     });
 
     const lambdaSG = new ec2.SecurityGroup(this, 'LambdaSG', {
@@ -75,6 +75,9 @@ export class CartApiConstruct extends Construct {
           DB_ENDPOINT_ADDRESS: dbInstance.dbInstanceEndpointAddress,
           DB_NAME: databaseName,
           DB_SECRET_ARN: dbInstance.secret?.secretFullArn || '',
+          REGION: 'us-east-1',
+          PGDB_PORT: dbInstance.dbInstanceEndpointPort,
+          PGDB_USER: 'postgres',
         },  
         timeout: cdk.Duration.seconds(300),
         bundling: {

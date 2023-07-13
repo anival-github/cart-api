@@ -2,7 +2,9 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CartItemEntity } from "./cart-item.entity";
 import { CartStatus } from "src/shared/models";
 
-@Entity()
+@Entity({
+  name: 'carts'
+})
 export class CartEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -6,16 +6,12 @@ import { DbConfig } from './database.config';
 export class DbConfigProvider {
   constructor(private readonly config: ConfigProvider) {}
 
-  getMigrationsPattern(): string {
-    return this.config.get<string>('DB_MIGRATIONS_PATTERN');
-  }
-
   getDbConfig(): DbConfig {
     return {
-      host: this.config.get<string>('PGDB_HOST'),
+      host: this.config.get<string>('DB_ENDPOINT_ADDRESS'),
       port: this.config.get<number>('PGDB_PORT'),
       username: this.config.get<string>('PGDB_USER'),
-      database: this.config.get<string>('PGDB_DB'),
+      database: this.config.get<string>('DB_NAME'),
       region: this.config.get<string>('PGDB_REGION'),
     };
   }
