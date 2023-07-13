@@ -1,13 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CartEntity } from "./cart.entity";
 
-@Entity({
-  name: 'cart_items'
-})
+@Entity({ name: 'cart_items'})
 export class CartItemEntity {
   @Column({
     type: 'uuid',
     nullable: false,
+    primary: true,
   })
   product_id: string;
 

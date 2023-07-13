@@ -6,15 +6,15 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
+import { SecretValue } from 'aws-cdk-lib';
 
 export class CartApiConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    // const {
-    //   PASSWORD_KEY,
-    //   TEST_PASSWORD,
-    // } = config;
+    const {
+      PGDB_PASSWORD,
+    } = config;
 
     const vpc = new ec2.Vpc(this, 'vpc', {
       subnetConfiguration: [
@@ -48,11 +48,13 @@ export class CartApiConstruct extends Construct {
       vpc,
       vpcSubnets: vpc.selectSubnets({
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+        // subnetType: ec2.SubnetType.PUBLIC,
       }),
       databaseName,
       securityGroups: [dbSecurityGroup],
-      credentials: rds.Credentials.fromGeneratedSecret('postgres'),
+      credentials: rds.Credentials.fromPassword('postgres', SecretValue.unsafePlainText(PGDB_PASSWORD)),
       maxAllocatedStorage: 200,
+      publiclyAccessible: true,
     });
 
     const lambdaSG = new ec2.SecurityGroup(this, 'LambdaSG', {
@@ -75,9 +77,10 @@ export class CartApiConstruct extends Construct {
           DB_ENDPOINT_ADDRESS: dbInstance.dbInstanceEndpointAddress,
           DB_NAME: databaseName,
           DB_SECRET_ARN: dbInstance.secret?.secretFullArn || '',
-          REGION: 'us-east-1',
+          PGDB_REGION: 'us-east-1',
           PGDB_PORT: dbInstance.dbInstanceEndpointPort,
           PGDB_USER: 'postgres',
+          PGDB_PASSWORD,
         },  
         timeout: cdk.Duration.seconds(300),
         bundling: {
@@ -87,10 +90,14 @@ export class CartApiConstruct extends Construct {
           ],
         },
         vpc,
+        // vpcSubnets: vpc.selectSubnets({
+        //   subnetType: ec2.SubnetType.PUBLIC,
+        // }),
         vpcSubnets: vpc.selectSubnets({
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
         }),
-        securityGroups: [lambdaSG],  
+        securityGroups: [lambdaSG],
+        // allowPublicSubnet: true,
       }
     );
 

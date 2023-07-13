@@ -4,7 +4,7 @@ import { CartEntity } from "src/cart/models/cart.entity";
 @Entity({
   name: 'orders'
 })
-export class Order {
+export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,14 +31,10 @@ export class Order {
   })
   delivery: string;
 
-  @Column({
-    type: 'string',
-  })
+  @Column()
   comments: string;
 
-  @Column({
-    type: 'string',
-  })
+  @Column()
   status: string;
 
   @Column({

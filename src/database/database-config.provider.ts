@@ -13,6 +13,7 @@ export class DbConfigProvider {
       username: this.config.get<string>('PGDB_USER'),
       database: this.config.get<string>('DB_NAME'),
       region: this.config.get<string>('PGDB_REGION'),
+      password: this.config.get<string>('PGDB_PASSWORD'),
     };
   }
 }

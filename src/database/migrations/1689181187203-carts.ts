@@ -31,14 +31,21 @@ export class Carts1689181187203 implements MigrationInterface {
               },
               {
                 name: 'status',
-                type: 'string',
+                type: 'text',
                 enum: Object.keys(CartStatus),
-                default: CartStatus.OPEN,
+                default: "'OPEN'",
               },
             ],
           }),
           true
         );
+
+        const date = new Date();
+
+        await queryRunner.query(`
+          INSERT INTO carts(user_id, created_at, updated_at)
+          VALUES (${1}, ${date}, ${date});
+        `)
       }
 
 

@@ -34,6 +34,12 @@ export class CartItems1689181221066 implements MigrationInterface {
           }),
           true
         );
+
+        await queryRunner.query(`
+          INSERT INTO orders(product_id, count, cart_id)
+          VALUES (${1}, ${1}, ${1});
+        `)
+
       }
 
 

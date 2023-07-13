@@ -11,6 +11,7 @@ export class CartService {
   constructor(
     @InjectRepository(CartEntity)
     private cartRepository: Repository<CartEntity>,
+    @InjectRepository(CartItemEntity)
     private cartItemRepository: Repository<CartItemEntity>,
   ) {}
 

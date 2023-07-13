@@ -4,4 +4,5 @@ export type DbConfig = {
   username: string;
   database: string;
   region: string;
+  password: string;
 };

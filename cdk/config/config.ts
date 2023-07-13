@@ -3,23 +3,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const getConfig = () => {
-  // const configurationObject = process.env;
+  const configurationObject = process.env;
 
-  // if (Object.values(configurationObject).some(item => item === undefined)) {
-  //   throw new Error('Env var has undefined');    
-  // }
+  if (Object.values(configurationObject).some(item => item === undefined)) {
+    throw new Error('Env var has undefined');    
+  }
 
-  // const PASSWORD_KEY = process.env.githubAccount as string;
-  // const TEST_PASSWORD = process.env[PASSWORD_KEY] as string;
+  const PGDB_PASSWORD = process.env.PGDB_PASSWORD as string;
 
-  // if ([PASSWORD_KEY, TEST_PASSWORD].some(item => item === undefined)) {
-  //   throw new Error('Env var not provided');
-  // }
+  if ([PGDB_PASSWORD].some(item => item === undefined)) {
+    throw new Error('Env var not provided');
+  }
 
-  // return {
-  //   PASSWORD_KEY,
-  //   TEST_PASSWORD,
-  // };
+  return {
+    PGDB_PASSWORD,
+  };
 }
 
 const config = getConfig();

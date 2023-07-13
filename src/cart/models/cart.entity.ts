@@ -28,10 +28,11 @@ export class CartEntity {
   updated_at: Date;
 
   @Column({
+    type: 'text',
     enum: CartStatus,
     default: CartStatus.OPEN,
   })
-  status: CartStatus;
+  status: string;
 
   @OneToMany(() => CartItemEntity, cartItem => cartItem.cart_id, { cascade: true })
   items: CartItemEntity[];  
