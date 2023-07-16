@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build --webpack",
+    "build-lambda": "nest build --webpack",
+    "build-eb": "DEPLOY_VIA=EB nest build --webpack",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -22,13 +23,13 @@
     "synth": "cdk synth",
     "deploy-cdk": "cdk deploy --require-approval 'never'",
     "deploy-cdk-hot": "cdk deploy --hotswap --require-approval 'never'",
-    "build-deploy-cdk": "npm run build && npm run synth && npm run deploy",
-    "build-deploy-cdk-hot": "npm run build && npm run synth && npm run deploy:hot",
-    "build-app-image": "docker build -t cart-api .",
-    "list-images": "docker images",
-    "run-image": "docker run -p 4000:4000 cart-api",
-    "run-image-dev": "docker run -p 4000:4000 --env-file ./.env --rm --name cart-api cart-api",
-    "stop": "docker stop cart-api"
+    "build-deploy-cdk": "npm run build-lambda && npm run synth && npm run deploy",
+    "build-deploy-cdk-hot": "npm run build-lambda && npm run synth && npm run deploy:hot",
+    "image-build": "docker build -t cart-api .",
+    "image-delete": "docker image rm cart-api",
+    "image-list": "docker images",
+    "container-run": "docker run -p 4000:4000 --env-file ./.env --rm --name cart-api cart-api",
+    "container-stop": "docker stop cart-api"
   },
   "dependencies": {
     "@aws-sdk/rds-signer": "^3.363.0",
