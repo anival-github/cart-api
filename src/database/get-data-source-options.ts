@@ -24,5 +24,10 @@ export default function getDataSourceOptions(
     ssl: true,
     migrations: [Orders1689181237819, CartItems1689181221066, Carts1689181187203],
     migrationsRun: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false
+      },
+    }
   };
 }

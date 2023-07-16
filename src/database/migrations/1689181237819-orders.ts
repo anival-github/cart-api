@@ -53,10 +53,10 @@ export class Orders1689181237819 implements MigrationInterface {
           true
         );
 
-        await queryRunner.query(`
-          INSERT INTO orders(user_id, cart_id, payment, delivery, comments, status, total)
-          VALUES (${1}, ${1}, 'cash', 'address', 'some comment', 'new', ${1});
-        `)
+        // await queryRunner.query(`
+        //   INSERT INTO orders(user_id, cart_id, payment, delivery, comments, status, total)
+        //   VALUES (${1}, ${1}, 'cash', 'address', 'some comment', 'new', ${1});
+        // `)
       }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

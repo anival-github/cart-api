@@ -42,10 +42,10 @@ export class Carts1689181187203 implements MigrationInterface {
 
         const date = new Date();
 
-        await queryRunner.query(`
-          INSERT INTO carts(user_id, created_at, updated_at)
-          VALUES (${1}, ${date}, ${date});
-        `)
+        // await queryRunner.query(`
+        //   INSERT INTO carts(user_id, created_at, updated_at)
+        //   VALUES (${1}, ${date}, ${date});
+        // `)
       }
 
 
