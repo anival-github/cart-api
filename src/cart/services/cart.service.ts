@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CartEntity } from '../models/cart.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Cart, CartItem } from '../models';
 import { ProductService } from 'src/products/services/product.service';
 import { CartItemEntity } from '../models/cart-item.entity';
@@ -58,6 +58,7 @@ export class CartService {
 
 
   async getCartItems(userId: string): Promise<CartItem[]> {
+    console.log('userId: ', userId);
     let userCart = null;
 
     userCart = await this.findByUserId(userId);
@@ -65,10 +66,16 @@ export class CartService {
     if (!userCart) {
       userCart = await this.createByUserId(userId);
     }
+    console.log('userCart: ', userCart);
 
-    const cartItems = await this.cartItemRepository.find({ where: { cart_id: userCart.id }, relations: { product: true } });
-    const items = cartItems.map(item => ({ count: item.count, product: item.product }))
+    const productIds = userCart.items.map(item => item.product_id);
 
+    const products = await this.productService.find({ where: { id: In(productIds) }}) || [];
+
+    console.log('products: ', products);
+
+    const items = userCart.items.map(cartItem => ({ count: cartItem.count, product: products.find(item => item.id === cartItem.product_id) }))
+    console.log('items: ', items);
     return items;
   }
 
@@ -77,7 +84,6 @@ export class CartService {
     await this.productService.upsertProduct(item.product);
 
     const cartItemToSave: CartItemEntity = {
-      product: item.product,
       product_id: item.product.id,
       count: item.count,
       cart_id: cart.id,

@@ -11,6 +11,7 @@ export class Carts1689181187203 implements MigrationInterface {
             {
               name: 'id',
               type: 'uuid',
+              isPrimary: true,
               isNullable: false,
           },
             {
@@ -94,14 +95,6 @@ export class Carts1689181187203 implements MigrationInterface {
                 default: "'OPEN'",
               },
             ],
-            foreignKeys: [
-              {
-                referencedTableName: 'users',
-                referencedColumnNames: ['id'],
-                columnNames: ['user_id'],
-                onDelete: 'CASCADE',
-              },
-            ],
           }),
           true
         );
@@ -179,6 +172,7 @@ export class Carts1689181187203 implements MigrationInterface {
               {
                 name: 'product_id',
                 type: 'uuid',
+                isPrimary: true,
                 isNullable: false,
             },
               {

@@ -14,11 +14,6 @@ export class CartEntity {
     type: 'uuid',
     nullable: false,
   })
-
-  @JoinColumn({
-    name: 'user_id',
-    referencedColumnName: 'id',
-  })
   user_id: string;
 
   @Column({

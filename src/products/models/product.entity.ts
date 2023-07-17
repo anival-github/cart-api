@@ -1,10 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
   name: 'products'
 })
 export class ProductEntity {
-  @Column({ name: 'id',  type: 'uuid' })
+  @PrimaryColumn()
+  @Column({ name: 'id',  type: 'uuid', primary: true })
   id: string;
 
   @Column({ name: 'title',  type: 'text' })
