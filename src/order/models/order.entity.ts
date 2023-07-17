@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CartEntity } from "src/cart/models/cart.entity";
+import { UserEntity } from "src/users/models/user.entity";
 
 @Entity({
   name: 'orders'
@@ -8,9 +9,10 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type: 'uuid',
-    nullable: false,
+  @ManyToOne(() => UserEntity, user => user.id)
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'id',
   })
   user_id: string;
 

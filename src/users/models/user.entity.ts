@@ -7,12 +7,24 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    type: 'text',
+    name: 'name',
+    nullable: true,
+  })
   name: string;
 
-  @Column()
+  @Column({
+    type: 'text',
+    name: 'email',
+    nullable: false,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    type: 'text',
+    name: 'password',
+    nullable: false,
+  })
   password: string;
 }

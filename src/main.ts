@@ -16,11 +16,11 @@ const bootstrapForLambda = async (): Promise<Handler> => {
 }
 
 const bootstrapForEC2 = async () => {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   await app.listen(port);
-  // app.enableCors({
-  //   origin: (req, callback) => callback(null, true),
-  // });
+  app.enableCors({
+    origin: (req, callback) => callback(null, true),
+  });
 }
 
 if (deployVia === 'EB') {
