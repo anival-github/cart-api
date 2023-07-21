@@ -6,7 +6,6 @@ import { AppRequest, getUserIdFromRequest } from '../shared';
 
 import { calculateCartTotal } from './models-rules';
 import { CartService } from './services';
-import { CartItemEntity } from './models/cart-item.entity';
 import { CartItem } from './models';
 
 @Controller('api/profile/cart')
@@ -20,19 +19,19 @@ export class CartController {
   // @UseGuards(BasicAuthGuard)
   @Get()
   async findUserCart(@Req() req: AppRequest) {
-    const cart = await this.cartService.findOrCreateByUserId(getUserIdFromRequest(req));
+    const cartItems = await this.cartService.getCartItems(getUserIdFromRequest(req));
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      data: { cart, total: calculateCartTotal(cart) },
+      data: cartItems,
     }
   }
 
   // @UseGuards(JwtAuthGuard)
   // @UseGuards(BasicAuthGuard)
   @Put()
-  async updateUserCart(@Req() req: AppRequest, @Body() body: CartItem[]) { // TODO: validate body payload...
+  async updateUserCart(@Req() req: AppRequest, @Body() body: CartItem) { // TODO: validate body payload...
     const cart = await this.cartService.updateByUserId(getUserIdFromRequest(req), body)
 
     return {
