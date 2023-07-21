@@ -22,6 +22,12 @@ const bootstrapForEC2 = async () => {
     allowedHeaders: '*',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   });
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', '*');
+    next();
+  });  
   await app.listen(port);
 }
 
