@@ -17,12 +17,12 @@ const bootstrapForLambda = async (): Promise<Handler> => {
 
 const bootstrapForEC2 = async () => {
   const app = await NestFactory.create(AppModule);
-  await app.listen(port);
   app.enableCors({
     origin: '*',
     allowedHeaders: '*',
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   });
+  await app.listen(port);
 }
 
 if (deployVia === 'EB') {
