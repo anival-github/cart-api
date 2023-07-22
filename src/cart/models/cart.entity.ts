@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CartItemEntity } from "./cart-item.entity";
 import { CartStatus } from "src/shared/models";
+import { UserEntity } from "src/users/models/user.entity";
 
 @Entity({
   name: 'carts'
@@ -35,5 +36,6 @@ export class CartEntity {
   status: string;
 
   @OneToMany(() => CartItemEntity, cartItem => cartItem.cart_id, { cascade: true })
+  @JoinColumn()
   items: CartItemEntity[];  
 }
