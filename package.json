@@ -7,9 +7,10 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build --webpack",
+    "build-lambda": "nest build --webpack",
+    "build-eb": "DEPLOY_VIA=EB nest build --webpack",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "NODE_ENV=development nest start",
+    "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,10 +21,15 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "synth": "cdk synth",
-    "deploy": "cdk deploy --require-approval 'never'",
-    "deploy:hot": "cdk deploy --hotswap --require-approval 'never'",
-    "build-deploy": "npm run build && npm run synth && npm run deploy",
-    "build-deploy-hot": "npm run build && npm run synth && npm run deploy:hot"
+    "deploy-cdk": "cdk deploy --require-approval 'never'",
+    "deploy-cdk-hot": "cdk deploy --hotswap --require-approval 'never'",
+    "build-deploy-cdk": "npm run build-lambda && npm run synth && npm run deploy-cdk",
+    "build-deploy-cdk-hot": "npm run build-lambda && npm run synth && npm run deploy-cdk-hot",
+    "image-build": "docker build -t cart-api .",
+    "image-delete": "docker image rm cart-api",
+    "image-list": "docker images",
+    "container-run": "docker run -p 4000:4000 --env-file ./.env --rm --name cart-api cart-api",
+    "container-stop": "docker stop cart-api"
   },
   "dependencies": {
     "@aws-sdk/rds-signer": "^3.363.0",
