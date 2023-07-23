@@ -29,7 +29,9 @@
     "image-delete": "docker image rm cart-api",
     "image-list": "docker images",
     "container-run": "docker run -p 4000:4000 --env-file ./.env --rm --name cart-api cart-api",
-    "container-stop": "docker stop cart-api"
+    "container-stop": "docker stop cart-api",
+    "set-env": "eb setenv `cat .env | sed '/^#/ d' | sed '/^$/ d'`",
+    "deploy-dev": "eb deploy production --staged"
   },
   "dependencies": {
     "@aws-sdk/rds-signer": "^3.363.0",
